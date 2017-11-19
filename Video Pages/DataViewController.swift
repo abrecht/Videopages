@@ -7,16 +7,29 @@
 //
 
 import UIKit
+import AVFoundation
 
 class DataViewController: UIViewController {
+    let avPlayer = AVPlayer()
+    var avPlayerLayer: AVPlayerLayer!
 
-    @IBOutlet weak var dataLabel: UILabel!
     var dataObject: String = ""
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        view.backgroundColor = .black
+        
+        // An AVPlayerLayer is a CALayer instance to which the AVPlayer can
+        // direct its visual output. Without it, the user will see nothing.
+        avPlayerLayer = AVPlayerLayer(player: avPlayer)
+        view.layer.insertSublayer(avPlayerLayer, at: 0)
+        
+        
+        let url = NSURL(string: dataObject)
+        
+        let playerItem = AVPlayerItem(url: url! as URL)
+        avPlayer.replaceCurrentItem(with: playerItem)
     }
 
     override func didReceiveMemoryWarning() {
@@ -26,7 +39,15 @@ class DataViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.dataLabel!.text = dataObject
+        
+        avPlayer.play() // Start the playback
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        // Layout subviews manually
+        avPlayerLayer.frame = view.bounds
     }
 
 

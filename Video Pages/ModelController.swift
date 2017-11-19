@@ -26,8 +26,8 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
     override init() {
         super.init()
         // Create the data model.
-        let dateFormatter = DateFormatter()
-        pageData = dateFormatter.monthSymbols
+//        let dateFormatter = DateFormatter()
+        pageData = ["http://avcam.us.to/hls/index.m3u8","https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8"] //dateFormatter.monthSymbols
     }
 
     func viewControllerAtIndex(_ index: Int, storyboard: UIStoryboard) -> DataViewController? {
