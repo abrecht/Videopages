@@ -1,5 +1,5 @@
 //
-//  DataViewController.swift
+//  AVPlayerViewController.swift
 //  Video Pages
 //
 //  Created by Manuel Abrecht on 11/12/17.
@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class DataViewController: UIViewController {
+class AVPlayerViewController: UIViewController {
     let avPlayer = AVPlayer()
     var avPlayerLayer: AVPlayerLayer!
 
@@ -19,7 +19,10 @@ class DataViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willResignActive), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+
         // An AVPlayerLayer is a CALayer instance to which the AVPlayer can
         // direct its visual output. Without it, the user will see nothing.
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
@@ -41,6 +44,11 @@ class DataViewController: UIViewController {
         super.viewWillAppear(animated)
         
         avPlayer.play() // Start the playback
+   }
+
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        avPlayer.pause()
     }
 
     override func viewWillLayoutSubviews() {
@@ -50,6 +58,18 @@ class DataViewController: UIViewController {
         avPlayerLayer.frame = view.bounds
     }
 
-
+    // MARK: - Notification oberserver methods
+    
+    @objc func didBecomeActive() {
+        if ( isViewLoaded && (view.window != nil)) {
+            avPlayer.play() // Start the playback
+        }
+        print("did become active")
+    }
+    
+    @objc func willResignActive() {
+        avPlayer.pause()
+        print("will rtesign foreground")
+    }
 }
 

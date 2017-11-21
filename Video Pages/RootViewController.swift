@@ -20,7 +20,7 @@ class RootViewController: UIViewController, UIPageViewControllerDelegate {
         self.pageViewController = UIPageViewController(transitionStyle: .pageCurl, navigationOrientation: .horizontal, options: nil)
         self.pageViewController!.delegate = self
 
-        let startingViewController: DataViewController = self.modelController.viewControllerAtIndex(0, storyboard: self.storyboard!)!
+        let startingViewController: AVPlayerViewController = self.modelController.viewControllerAtIndex(0, storyboard: self.storyboard!)!
         let viewControllers = [startingViewController]
         self.pageViewController!.setViewControllers(viewControllers, direction: .forward, animated: false, completion: {done in })
 
@@ -28,14 +28,6 @@ class RootViewController: UIViewController, UIPageViewControllerDelegate {
 
         self.addChildViewController(self.pageViewController!)
         self.view.addSubview(self.pageViewController!.view)
-
-        // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
-        var pageViewRect = self.view.bounds
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            pageViewRect = pageViewRect.insetBy(dx: 40.0, dy: 40.0)
-        }
-        self.pageViewController!.view.frame = pageViewRect
-
         self.pageViewController!.didMove(toParentViewController: self)
     }
 
@@ -69,7 +61,7 @@ class RootViewController: UIViewController, UIPageViewControllerDelegate {
         }
 
         // In landscape orientation: Set set the spine location to "mid" and the page view controller's view controllers array to contain two view controllers. If the current page is even, set it to contain the current and next view controllers; if it is odd, set the array to contain the previous and current view controllers.
-        let currentViewController = self.pageViewController!.viewControllers![0] as! DataViewController
+        let currentViewController = self.pageViewController!.viewControllers![0] as! AVPlayerViewController
         var viewControllers: [UIViewController]
 
         let indexOfCurrentViewController = self.modelController.indexOfViewController(currentViewController)
